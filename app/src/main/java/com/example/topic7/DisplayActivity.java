@@ -2,7 +2,10 @@ package com.example.topic7;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -27,6 +30,7 @@ public class DisplayActivity extends AppCompatActivity {
         listDictionary = findViewById(R.id.LvDisplay);
         dictionary = new HashMap<>();
 
+        readFromFile();
         ArrayAdapter adapter = new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_list_item_1,
@@ -34,6 +38,18 @@ public class DisplayActivity extends AppCompatActivity {
         );
 
         listDictionary.setAdapter(adapter);
+
+        listDictionary.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String key = parent.getItemAtPosition(position).toString();
+                String meaning = dictionary.get(key);
+                Intent intent = new Intent(DisplayActivity.this,MeaningActivity.class);
+                intent.putExtra("meaning", meaning);
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void readFromFile(){
